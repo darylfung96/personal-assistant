@@ -1,0 +1,9 @@
+*.onnx
+*.json
+*.mp3
+*.wav
+__pycache__/
+.vscode/
+.idea/
+.env
+.DS_Store

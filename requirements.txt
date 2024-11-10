@@ -1,0 +1,7 @@
+beam==0.6.0
+faster_whisper==1.0.3
+keyboard==0.13.5
+piper_tts==1.2.0
+PyAudio==0.2.14
+torch==2.2.2
+transformers==4.46.1
