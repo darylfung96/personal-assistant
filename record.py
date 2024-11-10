@@ -14,13 +14,20 @@ CHUNK = 1024  # Buffer size
 def record_audio() -> bytes:
     """Record audio from the microphone and return it as bytes.
 
-    The function records audio until the 'q' key is pressed.
+    The function records audio while the 'q' key is held down.
     The recorded audio is saved as a WAV file in memory and returned as bytes.
 
     Returns:
         bytes: The recorded audio data in WAV format.
-
     """
+    print("Press and hold 'f10` to start recording...")
+
+    # Wait for both Shift and ~ to be pressed
+    keyboard.wait("f10")  # Key combination for Shift + ~
+    print("Recording... Release 'f10` to stop.")
+
+    frames = []
+
     # Initialize PyAudio
     audio = pyaudio.PyAudio()
 
@@ -29,18 +36,10 @@ def record_audio() -> bytes:
         format=FORMAT, channels=CHANNELS, rate=RATE, input=True, frames_per_buffer=CHUNK
     )
 
-    print("Recording... Press 'q' to stop.")
-
-    frames = []
-
-    # Record until 'q' is pressed
-    while True:
+    # Record audio while both Shift and ~ are held down
+    while keyboard.is_pressed("f10"):
         data = stream.read(CHUNK)
         frames.append(data)
-
-        # Check if 'q' has been pressed
-        if keyboard.is_pressed("q"):
-            break
 
     print("Finished recording.")
 

@@ -30,7 +30,7 @@ def load_models():
     # Load Hugging Face model for text generation
     access_token = os.environ["HUGGINGFACE_ACCESS_TOKEN"]
     hf_home = os.environ["HF_HOME"]
-    llama_model_text = "chuanli11/Llama-3.2-3B-Instruct-uncensored"
+    llama_model_text = "unsloth/Llama-3.2-1B-Instruct"
 
     llama_model = AutoModelForCausalLM.from_pretrained(
         llama_model_text,
@@ -48,7 +48,7 @@ def load_models():
     )
 
     # Load voice model for text-to-speech
-    voice_model_path = "./voice/en_GB-cori-high.onnx"
+    voice_model_path = "./voice/en_GB-cori-medium.onnx"
     voice_model = PiperVoice.load(voice_model_path, use_cuda=torch.cuda.is_available())
 
     return model, llama_pipeline, voice_model
