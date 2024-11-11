@@ -60,7 +60,7 @@ def load_models():
     secrets=["HUGGINGFACE_ACCESS_TOKEN", "HF_HOME"],
     cpu=2,
     memory="8Gi",
-    gpu="T4",
+    gpu="A10G",
     image=Image(
         base_image="nvidia/cuda:12.2.2-cudnn8-runtime-ubuntu22.04",
         python_version="python3.10",
