@@ -36,15 +36,18 @@ def load_models(whisper_model_path: str, voice_model_path: str, device: str = "c
         model=llama_model,
         tokenizer=tokenizer,
         device_map=device,
-        max_new_tokens=512,
+        max_new_tokens=2048,
     )
 
     # # Load voice model for text-to-speech
-    model_filename = os.path.join(voice_model_path, "en_GB-cori-medium.onnx")
-    voice_model = PiperVoice.load(
-        model_filename,
-        use_cuda=torch.cuda.is_available(),
-    )
+    if voice_model_path is not None:
+        model_filename = os.path.join(voice_model_path, "en_GB-cori-medium.onnx")
+        voice_model = PiperVoice.load(
+            model_filename,
+            use_cuda=torch.cuda.is_available(),
+        )
+    else:
+        voice_model = None
 
     return whisper_model, llama_pipeline, voice_model
 

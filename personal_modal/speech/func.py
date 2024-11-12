@@ -1,10 +1,10 @@
 import base64
 import os
 
-from image import hf_vol, image, load_models, voice_vol, whisper_vol
-from llama import generate_text
-from stt import stt
-from tts import generate_audio
+from personal_modal.image import hf_vol, image, load_models, voice_vol, whisper_vol
+from personal_modal.llama import generate_text
+from personal_modal.stt import stt
+from personal_modal.speech.tts import generate_audio
 
 import modal
 

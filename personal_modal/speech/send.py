@@ -4,7 +4,8 @@ import os
 
 import requests
 import simpleaudio as sa
-from record import record_audio
+
+from personal_modal.record import record_audio
 
 # Set up the headers
 headers = {

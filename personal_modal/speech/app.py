@@ -2,8 +2,9 @@ import base64
 import io
 
 import simpleaudio as sa
-from func import Model, app
-from record import record_audio
+
+from personal_modal.record import record_audio
+from personal_modal.speech.func import Model, app
 
 
 @app.local_entrypoint()

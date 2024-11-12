@@ -1,6 +1,6 @@
 import wave
 
-from runtime import timing_decorator
+from personal_modal.runtime import timing_decorator
 
 
 @timing_decorator

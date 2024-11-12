@@ -1,7 +1,7 @@
 import base64
 from tempfile import NamedTemporaryFile
 
-from runtime import timing_decorator
+from personal_modal.runtime import timing_decorator
 
 
 @timing_decorator
