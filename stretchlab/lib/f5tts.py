@@ -66,7 +66,7 @@ class F5TTS:
         self,
         text_gen,
         remove_silence=False,
-        speed=1,
+        speed=0.9,
         output_filename="/tmp/output.wav",
     ):
         generated_audio_segments = []

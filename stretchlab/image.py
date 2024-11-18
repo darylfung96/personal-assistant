@@ -12,6 +12,7 @@ load_dotenv()
 whisper_vol = modal.Volume.from_name("whisper", create_if_missing=True)
 hf_vol = modal.Volume.from_name("hf", create_if_missing=True)
 voice_vol = modal.Volume.from_name("voice", create_if_missing=True)
+huggingface_model_path = "/hf"
 
 
 def load_models(whisper_model_path: str, voice_model_path: str, device: str = "cpu"):
@@ -59,7 +60,9 @@ image = (
     .env(
         {
             "HUGGINGFACE_ACCESS_TOKEN": os.environ["HUGGINGFACE_ACCESS_TOKEN"],
-            "HF_HOME": os.environ["HF_HOME"],
+            "HF_HOME": huggingface_model_path,
+            "STRETCHLAB_VECTOR_DB": os.environ["STRETCHLAB_VECTOR_DB"],
+            "STRETCHLAB_VECTOR_TOKEN": os.environ["STRETCHLAB_VECTOR_TOKEN"],
         },
     )
     .pip_install(
@@ -67,6 +70,7 @@ image = (
         "piper_tts==1.2.0",
         "transformers==4.46.1",
         "python-dotenv==1.0.1",
+        "upstash-vector==0.6.0",
     )
     .run_commands(
         "pip uninstall -y torch torchvision torchaudio",

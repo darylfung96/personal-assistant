@@ -17,7 +17,7 @@ def main():
         base64_encoded = base64.b64encode(
             audio_data,
         ).decode("utf-8")
-        audio_base64 = model.generate.remote(base64_encoded)["audio_base64"]
+        audio_base64 = model.generate.remote(base64_encoded, "Daryl")["audio_base64"]
 
         if audio_base64 == "":
             continue

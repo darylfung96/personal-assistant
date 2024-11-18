@@ -3,16 +3,23 @@ import os
 
 import modal
 
-from stretchlab.image import hf_vol, image, load_models, voice_vol, whisper_vol
+from stretchlab.image import (
+    hf_vol,
+    huggingface_model_path,
+    image,
+    load_models,
+    voice_vol,
+    whisper_vol,
+)
 from stretchlab.lib.f5tts import F5TTS
 from stretchlab.llama import generate_text
 from stretchlab.stt import stt
 from stretchlab.tts import generate_audio
+from stretchlab.vector_db.similar_index import query
 
 app = modal.App("personal-interviewer", image=image)
 voice_model_path = "/voice"
 whisper_model_path = "/whisper"
-huggingface_model_path = os.environ["HF_HOME"]
 
 
 @app.cls(
@@ -42,20 +49,37 @@ class Model:
         self.user_states = []
 
     @modal.method()
-    def generate(self, audio_base64: str):
+    def generate_audio_from_text(self, text: str):
+        audio_filepath = generate_audio(self.f5tts, text)
+        with open(audio_filepath, "rb") as f:
+            audio_base64 = base64.b64encode(f.read()).decode("utf-8")
+        return {"audio_base64": audio_base64}
+
+    @modal.method()
+    def generate(self, audio_base64: str, customer_name: str):
         text = stt(self.whisper_model, audio_base64)
 
         print("Recognized speech:")
         print(text)
         print("@@@@@@@@@@")
 
-        self.user_states.append({"role": "user", "content": text})
+        # check whether the text is similar to the index
+        context = query(text)
+
+        self.user_states.append(
+            {
+                "role": "user",
+                "content": f"{customer_name}: {text} \n Context: {context}",
+            }
+        )
 
         if text == "":
             return {"audio_base64": ""}
 
         # Generate response
-        response = generate_text(self.llama_pipeline, self.user_states)
+        response = generate_text(
+            self.llama_pipeline, self.user_states, customer_name=customer_name
+        )
         self.user_states.append({"role": "assistant", "content": response})
         print("Generated response:")
         print(response)
